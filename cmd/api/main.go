@@ -2,13 +2,14 @@ package main
 
 import (
 	"fmt"
+	"net/http"
+	"time"
+
 	docs "github.com/VikashChauhan51/go-sample-api/docs"
-	"github.com/VikashChauhan51/go-sample-api/routes"
+	"github.com/VikashChauhan51/go-sample-api/internal/routes"
 	"github.com/gin-gonic/gin"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-	"net/http"
-	"time"
 )
 
 func main() {

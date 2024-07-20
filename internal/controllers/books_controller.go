@@ -1,9 +1,10 @@
 package controllers
 
 import (
-	"github.com/VikashChauhan51/go-sample-api/internal/services"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/VikashChauhan51/go-sample-api/internal/infra/services"
+	"github.com/gin-gonic/gin"
 )
 
 // @Summary Get books

@@ -1,9 +1,10 @@
 package routes
 
 import (
-	"github.com/VikashChauhan51/go-sample-api/controllers"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/VikashChauhan51/go-sample-api/internal/controllers"
+	"github.com/gin-gonic/gin"
 )
 
 type Route struct {

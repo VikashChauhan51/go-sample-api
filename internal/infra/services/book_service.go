@@ -1,8 +1,9 @@
 package services
 
 import (
-	"github.com/VikashChauhan51/go-sample-api/models"
 	"time"
+
+	"github.com/VikashChauhan51/go-sample-api/internal/models"
 )
 
 // Simulate fetching books from an external API
