@@ -1,6 +1,6 @@
 # go-sample-api
 Web api in golang with Gin farmwork:
-
+```
 GO-SAMPLE-API
 ├───.github                # GitHub-specific files
 │   └───workflows          # CI/CD workflows
@@ -27,7 +27,7 @@ GO-SAMPLE-API
 │   └───middlewares        # Custom middleware implementations
 ├───test                   # Test-related files
 └───vendor                 # Third-party dependencies (managed by `go mod`)
-
+```
 
 
 ## Update swagger document
