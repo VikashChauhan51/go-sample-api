@@ -1,7 +1,7 @@
 package interfaces
 
-import "github.com/VikashChauhan51/go-sample-api/internal/models"
+import "github.com/VikashChauhan51/go-sample-api/internal/dto"
 
 type BookService interface {
-	FetchBooksAsync() (*[]models.Book, error)
+	FetchBooksAsync() (*[]dto.Book, error)
 }
