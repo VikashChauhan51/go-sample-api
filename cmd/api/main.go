@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/VikashChauhan51/go-sample-api/cmd/api/routes"
 	docs "github.com/VikashChauhan51/go-sample-api/docs"
-	"github.com/VikashChauhan51/go-sample-api/internal/routes"
 	"github.com/gin-gonic/gin"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
