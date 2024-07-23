@@ -41,7 +41,6 @@ swag init -g cmd/api/main.go
 ```
 go mod int <package_name>
 go get <package_url>
-go mod vendor
 go mod tidy
 go mod vendor
 swag init -g cmd/api/main.go
