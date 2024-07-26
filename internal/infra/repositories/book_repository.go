@@ -2,16 +2,16 @@ package repositories
 
 import (
 	"github.com/VikashChauhan51/go-sample-api/internal/core/entities"
-	interfaces "github.com/VikashChauhan51/go-sample-api/internal/core/interfaces/repositories"
+	interfaces "github.com/VikashChauhan51/go-sample-api/internal/core/interfaces"
+	repo "github.com/VikashChauhan51/go-sample-api/internal/core/interfaces/repositories"
 	_ "gorm.io/driver/sqlserver"
-	"gorm.io/gorm"
 )
 
 type BookRepository struct {
-	db *gorm.DB
+	db interfaces.Database
 }
 
-func NewBookRepository(db *gorm.DB) interfaces.BookRepository {
+func NewBookRepository(db interfaces.Database) repo.BookRepository {
 	return &BookRepository{db}
 }
 
