@@ -7,12 +7,20 @@ import (
 
 	"github.com/VikashChauhan51/go-sample-api/cmd/api/routes"
 	docs "github.com/VikashChauhan51/go-sample-api/docs"
+	"github.com/VikashChauhan51/go-sample-api/internal/infra/databases"
 	"github.com/gin-gonic/gin"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func main() {
+
+	// Connect to the database
+	dsn := "sqlserver://username:password@localhost:1433?database=bookstore"
+	db, err := databases.NewDBConnection(dsn)
+	if err != nil {
+		fmt.Printf("failed to connect to database: %v \n", err)
+	}
 	r := gin.New()
 	// LoggerWithFormatter middleware will write the logs to gin.DefaultWriter
 	// By default gin.DefaultWriter = os.Stdout
@@ -36,7 +44,7 @@ func main() {
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 	v1 := r.Group("/api/v1")
 	{
-		for _, route := range routes.Routes {
+		for _, route := range *routes.GetRoutes(db) {
 			switch route.Method {
 			case http.MethodGet:
 				v1.GET(route.Path, route.Handler)

@@ -3,9 +3,17 @@ package controllers
 import (
 	"net/http"
 
-	"github.com/VikashChauhan51/go-sample-api/internal/infra/services"
+	svc "github.com/VikashChauhan51/go-sample-api/internal/core/interfaces/services"
 	"github.com/gin-gonic/gin"
 )
+
+type BookController struct {
+	bookService svc.BookService
+}
+
+func NewBookController(service svc.BookService) *BookController {
+	return &BookController{service}
+}
 
 // @Summary Get books
 // @Description Retrieves a list of books
@@ -13,8 +21,8 @@ import (
 // @Produce  json
 // @Success 200 {array} models.Book
 // @Router /books [get]
-func GetBooks(c *gin.Context) {
-	books, err := services.BookService.FetchBooksAsync()
+func (b *BookController) GetBooks(c *gin.Context) {
+	books, err := b.bookService.FetchBooksAsync()
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
