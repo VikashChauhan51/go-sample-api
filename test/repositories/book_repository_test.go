@@ -14,7 +14,7 @@ import (
 
 func TestFetchBooksAsync(t *testing.T) {
 	mockDB := new(mocks.MockDB)
-	repo := repo.NewBookRepository(mockDB)
+	bookRepository := repo.NewBookRepository(mockDB)
 
 	expectedBooks := []entities.Book{
 		{ID: 1, Title: "Title1", Author: "Author1"},
@@ -26,7 +26,7 @@ func TestFetchBooksAsync(t *testing.T) {
 		*arg = expectedBooks
 	}).Return(&gorm.DB{Error: nil}).Once()
 
-	result, err := repo.FetchBooksAsync()
+	result, err := bookRepository.FetchBooksAsync()
 
 	assert.NoError(t, err)
 	assert.NotNil(t, result)

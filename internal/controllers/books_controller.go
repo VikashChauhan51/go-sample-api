@@ -14,7 +14,7 @@ import (
 // @Success 200 {array} models.Book
 // @Router /books [get]
 func GetBooks(c *gin.Context) {
-	books, err := services.FetchBooksAsync()
+	books, err := services.BookService.FetchBooksAsync()
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

@@ -1,26 +1,35 @@
 package services
 
 import (
-	"time"
-
+	repo "github.com/VikashChauhan51/go-sample-api/internal/core/interfaces/repositories"
+	svc "github.com/VikashChauhan51/go-sample-api/internal/core/interfaces/services"
 	"github.com/VikashChauhan51/go-sample-api/internal/dto"
 )
 
-// Simulate fetching books from an external API
-func FetchBooksAsync() ([]dto.Book, error) {
+type BookService struct {
+	bookRepository repo.BookRepository
+}
 
-	r := make(chan []dto.Book)
-	go func() {
-		time.Sleep(2 * time.Second) // Simulate external API call
-		books := []dto.Book{
-			{ID: 1, Title: "The Lord of the Rings", Author: "J. R. R. Tolkien"},
-			{ID: 2, Title: "Pride and Prejudice", Author: "Jane Austen"},
-			{ID: 3, Title: "To Kill a Mockingbird", Author: "Harper Lee"},
+func NewBookService(bookRepository repo.BookRepository) svc.BookService {
+	return &BookService{bookRepository}
+}
+
+func (b *BookService) FetchBooksAsync() ([]dto.Book, error) {
+
+	books, err := b.bookRepository.FetchBooksAsync()
+	if err != nil {
+		return nil, err
+	}
+
+	result := make([]dto.Book, len(*books))
+	// map result
+	for index, val := range *books {
+		result[index] = dto.Book{
+			ID:     val.ID,
+			Title:  val.Title,
+			Author: val.Author,
 		}
-		r <- books // Send book list to channel
-
-	}()
-	result := <-r
+	}
 	return result, nil
 
 }
