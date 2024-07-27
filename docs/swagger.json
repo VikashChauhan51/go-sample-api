@@ -20,7 +20,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/models.Book"
+                                "$ref": "#/definitions/dto.Book"
                             }
                         }
                     }
@@ -29,7 +29,7 @@
         }
     },
     "definitions": {
-        "models.Book": {
+        "dto.Book": {
             "type": "object",
             "properties": {
                 "author": {

@@ -6,6 +6,7 @@ import (
 
 	"github.com/VikashChauhan51/go-sample-api/cmd/api/routes"
 	docs "github.com/VikashChauhan51/go-sample-api/docs"
+	"github.com/VikashChauhan51/go-sample-api/internal/core/entities"
 	"github.com/VikashChauhan51/go-sample-api/internal/infra/databases"
 	"github.com/gin-gonic/gin"
 	swaggerfiles "github.com/swaggo/files"
@@ -15,11 +16,18 @@ import (
 func main() {
 
 	// Connect to the database
-	dsn := "sqlserver://username:password@localhost:1433?database=bookstore"
+	dsn := "sqlserver://Sa:Welcome@123@localhost:1433?database=bookstore"
 	db, err := databases.NewDBConnection(dsn)
 	if err != nil {
 		fmt.Printf("failed to connect to database: %v \n", err)
 	}
+
+	// Auto migrate database (create tables)
+	err = db.AutoMigrate(&entities.Book{})
+	if err != nil {
+		fmt.Printf("failed to migrate database: %v", err)
+	}
+
 	r := gin.New()
 	// LoggerWithFormatter middleware will write the logs to gin.DefaultWriter
 	// By default gin.DefaultWriter = os.Stdout
@@ -43,11 +51,7 @@ func main() {
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 	v1 := r.Group("/api/v1")
 	{
-		allRoutes, err := routes.ScanRoutes(db)
-		if err != nil {
-			fmt.Printf("failed to load routes: %v\n", err)
-			return
-		}
+		allRoutes := routes.ScanRoutes(db)
 		routes.RegisterRoutes(v1, allRoutes)
 	}
 

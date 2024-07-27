@@ -19,7 +19,7 @@ func NewBookController(service svc.BookService) *BookController {
 // @Description Retrieves a list of books
 // @Tags books
 // @Produce  json
-// @Success 200 {array} models.Book
+// @Success 200 {array} dto.Book
 // @Router /books [get]
 func (b *BookController) GetBooks(c *gin.Context) {
 	books, err := b.bookService.FetchBooksAsync()

@@ -1,5 +1,5 @@
 definitions:
-  models.Book:
+  dto.Book:
     properties:
       author:
         type: string
@@ -21,7 +21,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/models.Book'
+              $ref: '#/definitions/dto.Book'
             type: array
       summary: Get books
       tags:
