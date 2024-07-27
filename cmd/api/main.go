@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"net/http"
 	"time"
 
 	"github.com/VikashChauhan51/go-sample-api/cmd/api/routes"
@@ -44,26 +43,12 @@ func main() {
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 	v1 := r.Group("/api/v1")
 	{
-		for _, route := range *routes.GetRoutes(db) {
-			switch route.Method {
-			case http.MethodGet:
-				v1.GET(route.Path, route.Handler)
-			case http.MethodPost:
-				v1.POST(route.Path, route.Handler)
-			case http.MethodPut:
-				v1.PUT(route.Path, route.Handler)
-			case http.MethodPatch:
-				v1.PATCH(route.Path, route.Handler)
-			case http.MethodDelete:
-				v1.DELETE(route.Path, route.Handler)
-			case http.MethodOptions:
-				v1.OPTIONS(route.Path, route.Handler)
-			case http.MethodHead:
-				v1.HEAD(route.Path, route.Handler)
-			default:
-				fmt.Printf("Warning: Unsupported HTTP verb '%s' in route %s\n", route.Method, route.Path)
-			}
+		allRoutes, err := routes.ScanRoutes(db)
+		if err != nil {
+			fmt.Printf("failed to load routes: %v\n", err)
+			return
 		}
+		routes.RegisterRoutes(v1, allRoutes)
 	}
 
 	r.Run()

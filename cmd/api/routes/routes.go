@@ -1,12 +1,9 @@
 package routes
 
 import (
+	"fmt"
 	"net/http"
 
-	"github.com/VikashChauhan51/go-sample-api/internal/controllers"
-	"github.com/VikashChauhan51/go-sample-api/internal/core/interfaces"
-	"github.com/VikashChauhan51/go-sample-api/internal/infra/repositories"
-	"github.com/VikashChauhan51/go-sample-api/internal/infra/services"
 	"github.com/gin-gonic/gin"
 )
 
@@ -16,12 +13,25 @@ type Route struct {
 	Handler gin.HandlerFunc
 }
 
-func GetRoutes(db interfaces.Database) *[]Route {
-	// Defind all routes
-	return &[]Route{
-		{"GET", "/", func(c *gin.Context) {
-			c.JSON(http.StatusOK, gin.H{"data": "hello world"})
-		}},
-		{"GET", "/books", controllers.NewBookController(services.NewBookService(repositories.NewBookRepository(db))).GetBooks},
+func RegisterRoutes(r *gin.RouterGroup, routes []Route) {
+	for _, route := range routes {
+		switch route.Method {
+		case http.MethodGet:
+			r.GET(route.Path, route.Handler)
+		case http.MethodPost:
+			r.POST(route.Path, route.Handler)
+		case http.MethodPut:
+			r.PUT(route.Path, route.Handler)
+		case http.MethodPatch:
+			r.PATCH(route.Path, route.Handler)
+		case http.MethodDelete:
+			r.DELETE(route.Path, route.Handler)
+		case http.MethodOptions:
+			r.OPTIONS(route.Path, route.Handler)
+		case http.MethodHead:
+			r.HEAD(route.Path, route.Handler)
+		default:
+			fmt.Printf("Warning: Unsupported HTTP verb '%s' in route %s\n", route.Method, route.Path)
+		}
 	}
 }
