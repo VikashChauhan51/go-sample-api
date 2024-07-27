@@ -56,3 +56,5 @@ Click on debugger to run it.
 go run cmd/api/main.go
 ```
 http://localhost:8080/swagger/index.html
+
+![image](https://github.com/user-attachments/assets/87469707-8407-4076-9893-f429f04c4e7b)
