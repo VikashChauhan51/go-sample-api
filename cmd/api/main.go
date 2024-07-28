@@ -2,10 +2,12 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"time"
 
 	"github.com/VikashChauhan51/go-sample-api/cmd/api/routes"
+	config "github.com/VikashChauhan51/go-sample-api/configs"
 	docs "github.com/VikashChauhan51/go-sample-api/docs"
 	"github.com/VikashChauhan51/go-sample-api/internal/core/entities"
 	"github.com/VikashChauhan51/go-sample-api/internal/infra/databases"
@@ -16,23 +18,19 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-func loadEnv() {
-	if err := godotenv.Load(); err != nil {
-		fmt.Printf("No .env file found")
-	}
-}
-
 func main() {
 
-	loadEnv()
+	// Load the .env file
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatalf("Error loading .env file")
+	}
+	env := os.Getenv("GO_ENV")
+	config.LoadConfig(env) // Load environment-specific config
 	// Connect to the database
-	dbUser := os.Getenv("DB_USER")
-	dbPassword := os.Getenv("DB_PASSWORD")
-	dbHost := os.Getenv("DB_HOST")
-	dbPort := os.Getenv("DB_PORT")
-	dbName := os.Getenv("DB_NAME")
+	dbConfig := config.Config.Database
 
-	dsn := fmt.Sprintf("sqlserver://%s:%s@%s:%s?database=%s", dbUser, dbPassword, dbHost, dbPort, dbName)
+	dsn := fmt.Sprintf("sqlserver://%s:%s@%s:%d?database=%s", dbConfig.User, dbConfig.Password, dbConfig.Host, dbConfig.Port, dbConfig.DBName)
 	db, err := databases.NewDBConnection(dsn)
 	if err != nil {
 		fmt.Printf("failed to connect to database: %v \n", err)
@@ -72,6 +70,11 @@ func main() {
 		allRoutes := routes.ScanRoutes(db)
 		routes.RegisterRoutes(v1, allRoutes)
 	}
-
-	r.Run()
+	port := config.Config.Server.Port
+	address := fmt.Sprintf(":%d", port)
+	fmt.Printf("Starting server on port %d\n", port)
+	// Start the server on the configured port
+	if err := r.Run(address); err != nil {
+		log.Fatalf("Failed to run server: %v", err)
+	}
 }

@@ -1,0 +1,13 @@
+app:
+  name: "GO Sample API"
+  version: "1.0.0"
+
+server:
+  port: 8080
+
+database:
+  host: "localhost"
+  port: 1433
+  user: "Sa"
+  password: "Welcome@123"
+  dbname: "bookstore"

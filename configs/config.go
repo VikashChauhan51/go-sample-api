@@ -3,47 +3,54 @@ package config
 import (
 	"log"
 
-	"github.com/go-playground/validator"
-	"github.com/joho/godotenv"
 	"github.com/spf13/viper"
 )
 
-type Config struct {
-	DBHost     string `mapstructure:"DBHOST"`
-	DBName     string `mapstructure:"DBNAME"`
-	DBUser     string `mapstructure:"DBUSER"`
-	DBPort     string `mapstructure:"DBPORT"`
-	DBPassword string `mapstructure:"DBPASSWORD"`
+type AppConfig struct {
+	App      AppSettings
+	Server   ServerSettings
+	Database DatabaseSettings
 }
 
-var envs = []string{
-	"DBHOST", "DBNAME", "DBUSER", "DBPORT", "DBPASSWORD",
+type AppSettings struct {
+	Name    string
+	Version string
 }
 
-func LoadConfig() (Config, error) {
-	var cfg Config
-	viper.AddConfigPath("./")
-	viper.SetConfigFile(".env")
-	viper.ReadInConfig()
-	for _, env := range envs {
-		if err := viper.BindEnv(env); err != nil {
-			return cfg, err
-		}
+type ServerSettings struct {
+	Port int
+}
+
+type DatabaseSettings struct {
+	Host     string
+	Port     int
+	User     string
+	Password string
+	DBName   string
+}
+
+var Config AppConfig
+
+func LoadConfig(env string) {
+	viper.SetConfigName("config")
+	viper.AddConfigPath("./configs")
+	viper.SetConfigType("yaml")
+
+	if env != "" {
+		viper.SetConfigName("config_" + env)
 	}
-	cfgerr := viper.Unmarshal(&cfg)
 
-	if err := validator.New().Struct(&cfg); err != nil {
-		return cfg, err
-	}
-	LoadEnv()
-
-	return cfg, cfgerr
-
-}
-
-func LoadEnv() {
-	err := godotenv.Load()
+	err := viper.ReadInConfig()
 	if err != nil {
-		log.Fatal("Error loading Env File")
+		log.Fatalf("Error reading config file, %s", err)
 	}
+
+	err = viper.Unmarshal(&Config)
+	if err != nil {
+		log.Fatalf("Unable to decode into struct, %v", err)
+	}
+}
+
+func init() {
+	LoadConfig("") // Load default config
 }
