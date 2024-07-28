@@ -15,9 +15,9 @@ GO-SAMPLE-API
 │   ├───core               # Core business logic
 │   │   ├───entities       # Core business entities
 │   │   ├───interfaces     # Interfaces for dependencies
-│   │   │   ├───repositories  # Repository interfaces
-│   │   │   └───services      # Service interfaces
-│   │   └───usecases       # Business logic use cases
+│   │       ├───repositories  # Repository interfaces
+│   │       └───services      # Service interfaces
+│   │  
 │   ├───dto                # Data transfer objects (request/response models)
 │   └───infra              # Infrastructure implementations
 │       ├───databases      # Database access implementations

@@ -9,6 +9,7 @@ import (
 	docs "github.com/VikashChauhan51/go-sample-api/docs"
 	"github.com/VikashChauhan51/go-sample-api/internal/core/entities"
 	"github.com/VikashChauhan51/go-sample-api/internal/infra/databases"
+	"github.com/VikashChauhan51/go-sample-api/pkg/middlewares"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	swaggerfiles "github.com/swaggo/files"
@@ -61,6 +62,8 @@ func main() {
 		)
 	}))
 	r.Use(gin.Recovery())
+	// Apply middlewares
+	r.Use(middlewares.LoggerMiddleware())
 	docs.SwaggerInfo.BasePath = "/api/v1"
 	// Mount the Swagger middleware
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
