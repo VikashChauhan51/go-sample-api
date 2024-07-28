@@ -8,9 +8,62 @@ definitions:
       title:
         type: string
     type: object
+  dto.BookCreateDTO:
+    properties:
+      author:
+        type: string
+      title:
+        type: string
+    type: object
+  dto.BookUpdateDTO:
+    properties:
+      author:
+        type: string
+      id:
+        type: integer
+      title:
+        type: string
+    type: object
 info:
   contact: {}
 paths:
+  /book/{id}:
+    delete:
+      description: Deletes a book by its ID
+      parameters:
+      - description: Book ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Book deleted successfully
+          schema:
+            type: string
+      summary: Delete book
+      tags:
+      - books
+    get:
+      description: Retrieves a book by its ID
+      parameters:
+      - description: Book ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.Book'
+      summary: Get book by ID
+      tags:
+      - books
   /books:
     get:
       description: Retrieves a list of books
@@ -24,6 +77,54 @@ paths:
               $ref: '#/definitions/dto.Book'
             type: array
       summary: Get books
+      tags:
+      - books
+    post:
+      consumes:
+      - application/json
+      description: Creates a new book
+      parameters:
+      - description: Book to create
+        in: body
+        name: book
+        required: true
+        schema:
+          $ref: '#/definitions/dto.BookCreateDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.Book'
+      summary: Create book
+      tags:
+      - books
+  /books/{id}:
+    put:
+      consumes:
+      - application/json
+      description: Updates an existing book
+      parameters:
+      - description: Book ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Book to update
+        in: body
+        name: book
+        required: true
+        schema:
+          $ref: '#/definitions/dto.BookUpdateDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.Book'
+      summary: Update book
       tags:
       - books
 swagger: "2.0"
