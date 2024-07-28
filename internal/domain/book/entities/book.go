@@ -7,10 +7,10 @@ import (
 )
 
 type Book struct {
-	Id            objectValues.BookId   `gorm:"primary_key"`
-	Title         objectValues.Title    `gorm:"not null"`
-	AuthorId      authorValues.AuthorId `gorm:"not null"`                          // Foreign key reference
-	Author        entities.Author       `gorm:"foreignKey:AuthorID;references:ID"` // Association
-	Description   string
-	PublishedDate objectValues.PublishedDate `gorm:"not null"`
+	Id            objectValues.BookId        `gorm:"primary_key"`
+	Title         objectValues.Title         `gorm:"type:varchar(255);not null"`
+	AuthorId      authorValues.AuthorId      `gorm:"type:varchar(255);not null"`        // Foreign key reference
+	Author        entities.Author            `gorm:"foreignKey:AuthorId;references:Id"` // Association
+	Description   string                     `gorm:"type:varchar(255); null"`
+	PublishedDate objectValues.PublishedDate `gorm:"type:date;not null"`
 }
