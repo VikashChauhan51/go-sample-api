@@ -1,7 +1,7 @@
 package interfaces
 
 import (
-	"github.com/VikashChauhan51/go-sample-api/internal/core/entities"
+	"github.com/VikashChauhan51/go-sample-api/internal/domain/book/entities"
 	"github.com/VikashChauhan51/go-sample-api/internal/dto"
 )
 
