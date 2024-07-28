@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/VikashChauhan51/go-sample-api/cmd/api/routes"
@@ -9,14 +10,28 @@ import (
 	"github.com/VikashChauhan51/go-sample-api/internal/core/entities"
 	"github.com/VikashChauhan51/go-sample-api/internal/infra/databases"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
+func loadEnv() {
+	if err := godotenv.Load(); err != nil {
+		fmt.Printf("No .env file found")
+	}
+}
+
 func main() {
 
+	loadEnv()
 	// Connect to the database
-	dsn := "sqlserver://Sa:Welcome@123@localhost:1433?database=bookstore"
+	dbUser := os.Getenv("DB_USER")
+	dbPassword := os.Getenv("DB_PASSWORD")
+	dbHost := os.Getenv("DB_HOST")
+	dbPort := os.Getenv("DB_PORT")
+	dbName := os.Getenv("DB_NAME")
+
+	dsn := fmt.Sprintf("sqlserver://%s:%s@%s:%s?database=%s", dbUser, dbPassword, dbHost, dbPort, dbName)
 	db, err := databases.NewDBConnection(dsn)
 	if err != nil {
 		fmt.Printf("failed to connect to database: %v \n", err)
